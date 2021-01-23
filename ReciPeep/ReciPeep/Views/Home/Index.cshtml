@@ -8,7 +8,7 @@
     <p>Just input the ingredients below or send us a picture of the products (with the camera icon) and we'll try and give you some amazing meals</p>
 </div>
 
-<div id="app" class="container bg-light rounded">
+<div id="index" class="container bg-light rounded">
     <div class="d-flex flex-row-reverse pt-3 mb-3 sticky-top">
         <button class="btn btn-secondary ml-1" v-on:click="addIngredient">Add Ingredient</button>
         <button class="btn btn-danger ml-1"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera-fill" viewBox="0 0 16 16">
@@ -17,8 +17,9 @@
 </svg></button>
     </div>
 
-    <ingredient v-for="n in count"></ingredient>
-    
+    <div class="input-group pb-3" v-for="(ingredient,index) in ingredients" >
+        <input v-model="ingredient.ingredient" value="{{ingredient.ingredient}}" v-on:keyup.tab="addIngredient" type="text" class="form-control" placeholder="Add an ingredient">
+    </div>
     
     <div class="row">
         <button class="btn btn-success flex-fill ml-3 mr-3 mb-3">Get Recipes</button>
