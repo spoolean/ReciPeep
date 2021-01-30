@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "q3VoT591zVVw0Ng+PW/uCv0vfTUPI1ecHdftYEkNJ/Jjqlsin1cTef379jMqpRyn2la/CvsKABXeu0vXr8DzAA==",
+  "dgSpecHash": "ie0Zt6p4jA6n4Syo0MYCuqzIi9MbD879pjW0afS4EEXmCLbMtGxvzhHT2jsGGs/G8S8ERi4J/3PexqfaYVWxaA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\jamie\\Source\\Repos\\ReciPeep\\ReciPeep\\ReciPeep\\ReciPeep.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\isaac\\source\\repos\\ReciPeep Recipe Search\\ReciPeep\\ReciPeep\\ReciPeep\\ReciPeep.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\isaac\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+  ],
   "logs": []
 }
