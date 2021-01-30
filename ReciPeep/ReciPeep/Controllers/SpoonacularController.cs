@@ -11,12 +11,10 @@ namespace ReciPeep.Controllers
     [Route("Spoonacular")]
     public class SpoonacularController : Controller
     {
-        //public JArray recipeStoreArray = new JArray();
-        //public JObject recipeStore = new JObject();
 
         private string apiKey = "19276f6da3644e54981cc0d2dea5c426";
 
-        /*[HttpPost("GetRecipies")]
+        [HttpGet("FeelingLucky")]
         public async Task<IActionResult> IngredientSearch()
         {
             HttpClient client = new HttpClient();
@@ -31,7 +29,6 @@ namespace ReciPeep.Controllers
                 responseBody = await response.Content.ReadAsStringAsync();
 
                 JObject recipeTemp = JObject.Parse(responseBody);
-                //recipeStoreArray.Add(recipeTemp["recipes"][0]);
                 Console.WriteLine("loaded random recipe");
             }
             catch (HttpRequestException e)
@@ -39,8 +36,8 @@ namespace ReciPeep.Controllers
                 Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
-            return responseBody;
-        }*/
+            return Ok(responseBody);
+        }
 
 
 
@@ -73,8 +70,6 @@ namespace ReciPeep.Controllers
                 HttpResponseMessage response = await client.GetAsync(url);
                 response.EnsureSuccessStatusCode();
                 responseBody = await response.Content.ReadAsStringAsync();
-
-                //recipeStoreArray = JArray.Parse(responseBody);
                 Console.WriteLine("loaded response");
             }
             catch (HttpRequestException e)
@@ -85,57 +80,6 @@ namespace ReciPeep.Controllers
             return Ok(responseBody);
         }
 
-        /*[HttpPost("ToString")]
-        public override string ToString()
-        {
-            string beautifyString = "";
-            if (recipeStoreArray.Count > 0)
-            {
-
-                beautifyString += "title: " + recipeStoreArray[0]["title"] + "\n";
-                beautifyString += "image: " + recipeStoreArray[0]["image"] + "\n";
-
-                int numIngredients = 0;
-
-                //add ingredients you own           
-                if (!(recipeStoreArray[0]["usedIngredientCount"] == null))
-                {
-                    beautifyString += "Owned ingredients : " + "\n";
-                    numIngredients = recipeStoreArray[0]["usedIngredientCount"].ToObject<int>();
-                    for (int i = 0; i < numIngredients; i++)
-                    {
-                        beautifyString += "-" + recipeStoreArray[0]["usedIngredients"][i]["name"] + "\n";
-                    }
-                }
-
-                //add ingredients you don't own            
-                if (!(recipeStoreArray[0]["missedIngredientCount"] == null))
-                {
-                    beautifyString += "Unowned ingredients : " + "\n";
-                    numIngredients = recipeStoreArray[0]["missedIngredientCount"].ToObject<int>();
-                    for (int i = 0; i < numIngredients; i++)
-                    {
-                        beautifyString += "-" + recipeStoreArray[0]["missedIngredients"][i]["name"] + "\n";
-                    }
-                }
-
-                //handle random
-                if (!(recipeStoreArray[0]["extendedIngredients"] == null))
-                {
-                    JArray ingredients = (JArray)recipeStoreArray[0]["extendedIngredients"];
-                    numIngredients = ingredients.Count;
-                    for (int i = 0; i < numIngredients; i++)
-                    {
-                        beautifyString += "-" + recipeStoreArray[0]["extendedIngredients"][i]["name"] + "\n";
-                    }
-                }
-
-                return beautifyString;
-            }
-            else
-            {
-                return "No recipies have been found";
-            }
-        }*/
+        
     }
 }
