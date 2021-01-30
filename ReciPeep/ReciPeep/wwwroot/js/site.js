@@ -22,20 +22,24 @@ new Vue({
     el: '#index',
     data: function() {
         return {
-            count: 0,
-            ingredients: [{ ingredient: '' }]
+            ingredients: [{ ingredient: '' }],
+            stringifyIngredients: '',
+            recipes: []
         }
     },
     methods: {
         addIngredient: function () {
-            this.count += 1;
             this.ingredients.push({ ingredient: '' });
         },
 
-        pushIngredients: function (data) {
-            Http.Post(`${window.location.origin}/whatevercontollerthishappenstobe`, data)
-                .then(data => console.log(data))
-                .catch(err => conso.log(err));
+        pushIngredients: function () {
+            this.stringifyIngredients = '';
+            for (var i = 0; i < this.ingredients.length; i++) {
+                this.stringifyIngredients += String(this.ingredients[i].ingredient) + ',';
+            }
+
+            alert(this.stringifyIngredients);
+
         }
     }
 })
