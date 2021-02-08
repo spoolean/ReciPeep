@@ -40,10 +40,6 @@ namespace ReciPeep.Controllers
         }
 
 
-
-
-
-
         [HttpGet("GetRecipies/{ingredientsString}")]
         public async Task<IActionResult> IngredientSearch(string ingredientsString)
         {
@@ -77,7 +73,18 @@ namespace ReciPeep.Controllers
                 Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
-            return Ok(responseBody);
+            return Ok(CutObject(JArray.Parse(responseBody)).ToString());
+        }
+
+        private JObject CutObject(JArray recipie){
+            JObject outputRecipie = new JObject
+            {
+                { "title", recipie[0]["title"] },
+                { "image", recipie[0]["image"] },
+                { "missedIngredients", recipie[0]["missedIngredients"] },
+                { "usedIngredients", recipie[0]["usedIngredients"] }
+            };
+            return outputRecipie;
         }
 
         
