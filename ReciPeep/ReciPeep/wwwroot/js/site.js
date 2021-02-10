@@ -3,28 +3,37 @@
 
 // Write your JavaScript code.
 
-//Vue.component('ingredient',{
+Vue.component('recipe-card', {
+    props: ['recipe'],
+    template: '<div class="card" style="width: 18rem;"> \
+                    <img src="this.recipe.img"class= "card-img-top" > \
+                    <div class="card-body"> \
+                        <h5 class="card-title">{{this.recipe.name}}</h5> \
+                        <h2>Used Ingredients</h2> \
+                        <p v-for="used in this.recipe.used">{{ used }}</p> \
+                        <h2>Missing Ingredients</h2> \
+                        <p v-for="missing in this.recipe.missing">{{ missing }}</p> \
+                        <button href="this.recipe.link" class="btn btn-primary">Open Method</button> \
+                    </div>\
+               </div>'
 
-//    props: ['ingredient'],
-//    data: function () {
-//        return {
-            
-//        }
-//    },
-//    template: '\
-//        <div class="input-group pb-3">\
-//            <input type="text" class="form-control" placeholder="Add an ingredient">\
-//        </div>'
 
-//})
+})
 
-new Vue({
+let vm = new Vue({
     el: '#index',
-    data: function() {
+    data: function () {
         return {
+            submitted: false,
             ingredients: [{ ingredient: '' }],
             stringifyIngredients: '',
-            recipes: []
+            recipes: [{
+                name: "cheese bites",
+                img: "https://www.telegraph.co.uk/content/dam/music/2018/06/08/Kanye-Ye-album-cover_trans_NvBQzQNjv4BqSZCfQn3UNBPwFTCNOaG4Id2-jbwZxVZZoXJ1WwZY6Xk.jpg",
+                used: ["eggs", "cheese"],
+                missing: ["bacon", "mushrooms", "tagliatelle"],
+                link: "https://news.sky.com/"
+            }]
         }
     },
     methods: {
@@ -34,38 +43,21 @@ new Vue({
 
         pushIngredients: function () {
             this.stringifyIngredients = '';
+
             for (var i = 0; i < this.ingredients.length; i++) {
                 this.stringifyIngredients += String(this.ingredients[i].ingredient) + ',';
             }
 
-            alert(this.stringifyIngredients);
+            fetch(`${window.location.origin}/spoonacular/getrecipies/${this.stringifyIngredients}`)
+                .then(({ data }) => { this.recipes = data; })
+                .catch(() => { alert("fail"); });
+
+            this.submitted = true;
 
         }
     }
-})
+});
 
 
-class Http {
-    async Get(url) {
-        var response = await fetch(url);
 
-        var data = await response.json();
-
-        return data;
-    }
-
-    async Post(url, data) {
-        var response = fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-
-        var result = await response.json();
-
-        return result;
-    }
-}
 
