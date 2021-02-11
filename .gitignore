@@ -1,9 +1,28 @@
-/vs
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
 
-**/Debug
+# User-specific files (MonoDevelop/Xamarin Studio)
+*.userprefs
 
-Recipeep/ReciPeep/.vs/ReciPeep/v16
+# Mono auto generated files
+mono_crash.*
 
-/Recipeep/Recipeep/bin/Debug
-
-/Recipeep/Recipeep/obj
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
