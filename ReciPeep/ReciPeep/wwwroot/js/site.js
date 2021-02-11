@@ -13,35 +13,7 @@ let vm = new Vue({
             show: true,
             ingredients: [{ ingredient: '' }],
             stringifyIngredients: '',
-            recipes: [{
-                name: "cheese bites",
-                image: "https://www.telegraph.co.uk/content/dam/music/2018/06/08/Kanye-Ye-album-cover_trans_NvBQzQNjv4BqSZCfQn3UNBPwFTCNOaG4Id2-jbwZxVZZoXJ1WwZY6Xk.jpg",
-                used: ["eggs", "cheese"],
-                missing: ["bacon", "mushrooms", "tagliatelle"],
-                link: "https://news.sky.com/"
-            },
-            {
-                name: "cheese bites",
-                image: "https://www.telegraph.co.uk/content/dam/music/2018/06/08/Kanye-Ye-album-cover_trans_NvBQzQNjv4BqSZCfQn3UNBPwFTCNOaG4Id2-jbwZxVZZoXJ1WwZY6Xk.jpg",
-                used: ["eggs", "cheese"],
-                missing: ["bacon", "mushrooms", "tagliatelle"],
-                link: "https://news.sky.com/"
-            },
-            {
-                name: "cheese bites",
-                image: "https://www.telegraph.co.uk/content/dam/music/2018/06/08/Kanye-Ye-album-cover_trans_NvBQzQNjv4BqSZCfQn3UNBPwFTCNOaG4Id2-jbwZxVZZoXJ1WwZY6Xk.jpg",
-                used: ["eggs", "cheese"],
-                missing: ["bacon", "mushrooms", "tagliatelle"],
-                link: "https://news.sky.com/"
-            }
-            ,
-            {
-                name: "cheese bites",
-                image: "https://www.telegraph.co.uk/content/dam/music/2018/06/08/Kanye-Ye-album-cover_trans_NvBQzQNjv4BqSZCfQn3UNBPwFTCNOaG4Id2-jbwZxVZZoXJ1WwZY6Xk.jpg",
-                used: ["eggs", "cheese"],
-                missing: ["bacon", "mushrooms", "tagliatelle"],
-                link: "https://news.sky.com/"
-            }]
+            recipes: []
         }
     },
     methods: {
@@ -60,9 +32,9 @@ let vm = new Vue({
                 this.stringifyIngredients += String(this.ingredients[i].ingredient) + ',';
             }
 
-            //fetch(`${window.location.origin}/spoonacular/getrecipies/${this.stringifyIngredients}`)
-            //    .then(({ data }) => { this.recipes = data; })
-            //    .catch(() => { alert("fail"); });
+            fetch(`${window.location.origin}/spoonacular/getrecipes/${this.stringifyIngredients}`)
+                .then(({ data }) => { this.recipes = data; })
+                .catch(() => { alert("fail"); });
 
             this.submitted = true;
 
