@@ -1,3 +1,9 @@
 /vs
 
 **/Debug
+
+.suo
+
+/Recipeep/Recipeep/bin/Debug
+
+/Recipeep/Recipeep/obj
