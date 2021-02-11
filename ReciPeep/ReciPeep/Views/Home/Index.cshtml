@@ -50,14 +50,14 @@
                 <div class="card mb-3">
                     <img :src="recipe.image" class="card-img-top">
                     <div class="card-body">
-                        <h5 class="card-title">{{recipe.name}}</h5>
+                        <h5 class="card-title">{{recipe.title}}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Used Ingredients</h6>
                         <ul>
-                            <li v-for="used in recipe.used">{{ used }}</li>
+                            <li v-for="used in recipe.usedIngredients">{{ used.name }}</li>
                         </ul>
                         <h6 class="card-subtitle mb-2 text-muted">Missing Ingredients</h6>
                         <ul>
-                            <li v-for="missing in recipe.missing">{{ missing }}</li>
+                            <li v-for="missing in recipe.missedIngredients">{{ missing.name }}</li>
                         </ul>
                         <div class="row">
                             <a :href="recipe.link" class="btn btn-primary flex-fill ml-3 mr-3">Open Method</a>

@@ -3,8 +3,6 @@
 
 // Write your JavaScript code.
 
-
-
 let vm = new Vue({
     el: '#index',
     data: function () {
@@ -25,16 +23,26 @@ let vm = new Vue({
             this.submitted = false;
         },
 
+
+
         pushIngredients: function () {
+            this.recipes = [];
             this.stringifyIngredients = '';
 
             for (var i = 0; i < this.ingredients.length; i++) {
                 this.stringifyIngredients += String(this.ingredients[i].ingredient) + ',';
             }
+            this.stringifyIngredients = this.stringifyIngredients.substring(0, this.stringifyIngredients.length - 1);
 
-            fetch(`${window.location.origin}/spoonacular/getrecipes/${this.stringifyIngredients}`)
-                .then(({ data }) => { this.recipes = data; })
-                .catch(() => { alert("fail"); });
+            fetch(`${window.location.origin}/spoonacular/getrecipes/${this.stringifyIngredients}`
+            ).then(response => {
+                if (!response.ok) {
+                    throw new Error("This dont work");
+                }
+                return response.json();
+            }).then(data => {
+                this.recipes = data;
+            }).catch(error => { alert(error); });            
 
             this.submitted = true;
 
