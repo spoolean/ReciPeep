@@ -37,3 +37,4 @@ C:\Users\jamie\Source\Repos\ReciPeep\ReciPeep\ReciPeep\obj\Debug\netcoreapp3.1\R
 C:\Users\jamie\Source\Repos\ReciPeep\ReciPeep\ReciPeep\obj\Debug\netcoreapp3.1\ReciPeep.csproj.CopyComplete
 C:\Users\jamie\Source\Repos\ReciPeep\ReciPeep\ReciPeep\bin\Debug\netcoreapp3.1\package-lock.json
 C:\Users\jamie\Source\Repos\ReciPeep\ReciPeep\ReciPeep\bin\Debug\netcoreapp3.1\package.json
+C:\Users\jamie\Source\Repos\ReciPeep\ReciPeep\ReciPeep\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll

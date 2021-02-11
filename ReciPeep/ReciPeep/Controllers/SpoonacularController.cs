@@ -40,7 +40,7 @@ namespace ReciPeep.Controllers
         }
 
 
-        [HttpGet("GetRecipies/{ingredientsString}")]
+        [HttpGet("GetRecipes/{ingredientsString}")]
         public async Task<IActionResult> IngredientSearch(string ingredientsString)
         {
             string[] ingredients = ingredientsString.Split(",");
