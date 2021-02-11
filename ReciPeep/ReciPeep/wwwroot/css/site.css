@@ -5,6 +5,8 @@ for details on configuring this project to bundle and minify static web assets. 
     font-family: 'Maven Pro', sans-serif;
 }
 
+[v-cloak] { display:none; }
+
 
 
 

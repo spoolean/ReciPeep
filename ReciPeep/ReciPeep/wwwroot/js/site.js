@@ -3,33 +3,41 @@
 
 // Write your JavaScript code.
 
-Vue.component('recipe-card', {
-    props: ['recipe'],
-    template: '<div class="card" style="width: 18rem;"> \
-                    <img src="this.recipe.img"class= "card-img-top" > \
-                    <div class="card-body"> \
-                        <h5 class="card-title">{{this.recipe.name}}</h5> \
-                        <h2>Used Ingredients</h2> \
-                        <p v-for="used in this.recipe.used">{{ used }}</p> \
-                        <h2>Missing Ingredients</h2> \
-                        <p v-for="missing in this.recipe.missing">{{ missing }}</p> \
-                        <button href="this.recipe.link" class="btn btn-primary">Open Method</button> \
-                    </div>\
-               </div>'
 
-
-})
 
 let vm = new Vue({
     el: '#index',
     data: function () {
         return {
             submitted: false,
+            show: true,
             ingredients: [{ ingredient: '' }],
             stringifyIngredients: '',
             recipes: [{
                 name: "cheese bites",
-                img: "https://www.telegraph.co.uk/content/dam/music/2018/06/08/Kanye-Ye-album-cover_trans_NvBQzQNjv4BqSZCfQn3UNBPwFTCNOaG4Id2-jbwZxVZZoXJ1WwZY6Xk.jpg",
+                image: "https://www.telegraph.co.uk/content/dam/music/2018/06/08/Kanye-Ye-album-cover_trans_NvBQzQNjv4BqSZCfQn3UNBPwFTCNOaG4Id2-jbwZxVZZoXJ1WwZY6Xk.jpg",
+                used: ["eggs", "cheese"],
+                missing: ["bacon", "mushrooms", "tagliatelle"],
+                link: "https://news.sky.com/"
+            },
+            {
+                name: "cheese bites",
+                image: "https://www.telegraph.co.uk/content/dam/music/2018/06/08/Kanye-Ye-album-cover_trans_NvBQzQNjv4BqSZCfQn3UNBPwFTCNOaG4Id2-jbwZxVZZoXJ1WwZY6Xk.jpg",
+                used: ["eggs", "cheese"],
+                missing: ["bacon", "mushrooms", "tagliatelle"],
+                link: "https://news.sky.com/"
+            },
+            {
+                name: "cheese bites",
+                image: "https://www.telegraph.co.uk/content/dam/music/2018/06/08/Kanye-Ye-album-cover_trans_NvBQzQNjv4BqSZCfQn3UNBPwFTCNOaG4Id2-jbwZxVZZoXJ1WwZY6Xk.jpg",
+                used: ["eggs", "cheese"],
+                missing: ["bacon", "mushrooms", "tagliatelle"],
+                link: "https://news.sky.com/"
+            }
+            ,
+            {
+                name: "cheese bites",
+                image: "https://www.telegraph.co.uk/content/dam/music/2018/06/08/Kanye-Ye-album-cover_trans_NvBQzQNjv4BqSZCfQn3UNBPwFTCNOaG4Id2-jbwZxVZZoXJ1WwZY6Xk.jpg",
                 used: ["eggs", "cheese"],
                 missing: ["bacon", "mushrooms", "tagliatelle"],
                 link: "https://news.sky.com/"
@@ -41,6 +49,10 @@ let vm = new Vue({
             this.ingredients.push({ ingredient: '' });
         },
 
+        changeIngredients() {
+            this.submitted = false;
+        },
+
         pushIngredients: function () {
             this.stringifyIngredients = '';
 
@@ -48,9 +60,9 @@ let vm = new Vue({
                 this.stringifyIngredients += String(this.ingredients[i].ingredient) + ',';
             }
 
-            fetch(`${window.location.origin}/spoonacular/getrecipies/${this.stringifyIngredients}`)
-                .then(({ data }) => { this.recipes = data; })
-                .catch(() => { alert("fail"); });
+            //fetch(`${window.location.origin}/spoonacular/getrecipies/${this.stringifyIngredients}`)
+            //    .then(({ data }) => { this.recipes = data; })
+            //    .catch(() => { alert("fail"); });
 
             this.submitted = true;
 
