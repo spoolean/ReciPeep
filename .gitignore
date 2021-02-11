@@ -1,15 +1,12 @@
 # User-specific files
-*.rsuser
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
+*.dt
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
-
-# Mono auto generated files
-mono_crash.*
 
 # Build results
 [Dd]ebug/
@@ -18,11 +15,12 @@ mono_crash.*
 [Rr]eleases/
 x64/
 x86/
-[Ww][Ii][Nn]32/
-[Aa][Rr][Mm]/
-[Aa][Rr][Mm]64/
 bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
-[Ll]ogs/
+
+/.vs/
+/Recipeep/.vs
+/Recipeep/Recipeep/bin
+/Recipeep/Recipeep/obj
