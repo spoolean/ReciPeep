@@ -110,8 +110,8 @@ namespace ReciPeep.Controllers
                 { "image", recipe["image"] },
                 { "sourceUrl", extraInfo["sourceUrl"] },
                 { "missedIngredientCount", recipe["missedIngredientCount"] },
-                //{ "missedIngredients", recipe["missedIngredients"] },
-                //{ "usedIngredients", recipe["usedIngredients"] }
+                { "missedIngredients", recipe["missedIngredients"] },
+                { "usedIngredients", recipe["usedIngredients"] }
             };
             return outputRecipe;
         }
