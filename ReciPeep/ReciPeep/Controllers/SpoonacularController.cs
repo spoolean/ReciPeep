@@ -40,7 +40,7 @@ namespace ReciPeep.Controllers
         }
 
 
-        [HttpGet("GetRecipies/{ingredientsString}")]
+        [HttpGet("GetRecipes/{ingredientsString}")]
         public async Task<IActionResult> IngredientSearch(string ingredientsString)
         {
             string[] ingredients = ingredientsString.Split(",");
@@ -58,7 +58,7 @@ namespace ReciPeep.Controllers
                     url += ",+";
                 }
             }
-            url += "&number=2";
+            url += "&number=10";
 
             // Call asynchronous network methods in a try/catch block to handle exceptions.         
             try
@@ -73,18 +73,54 @@ namespace ReciPeep.Controllers
                 Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
-            return Ok(CutObject(JArray.Parse(responseBody)).ToString());
+
+            JArray responseData = JArray.Parse(responseBody);
+            JArray skinnyRecipes = new JArray();
+
+            for (int i = 0; i < responseData.Count; i++) 
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(GetInfoURL(responseData[i]["id"].ToString()));
+                    response.EnsureSuccessStatusCode();
+                    responseBody = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine("loaded response");
+                }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine("\nException Caught!");
+                    Console.WriteLine("Message :{0} ", e.Message);
+                }
+                skinnyRecipes.Add(CutObject(responseData[i],JObject.Parse(responseBody)));
+                //skinnyRecipe.Add();
+
+            }
+            
+            JArray sortedSkinnyRecipes = new JArray(skinnyRecipes.OrderBy(obj => (string)obj["missedIngredientCount"]));
+
+            return Ok(sortedSkinnyRecipes.ToString());
         }
 
-        private JObject CutObject(JArray recipie){
-            JObject outputRecipie = new JObject
+        private JObject CutObject(JToken recipe,JObject extraInfo)
+        {
+            JObject outputRecipe = new JObject
             {
-                { "title", recipie[0]["title"] },
-                { "image", recipie[0]["image"] },
-                { "missedIngredients", recipie[0]["missedIngredients"] },
-                { "usedIngredients", recipie[0]["usedIngredients"] }
+                { "id", recipe["id"] },
+                { "title", recipe["title"] },
+                { "image", recipe["image"] },
+                { "sourceUrl", extraInfo["sourceUrl"] },
+                { "missedIngredientCount", recipe["missedIngredientCount"] },
+                //{ "missedIngredients", recipe["missedIngredients"] },
+                //{ "usedIngredients", recipe["usedIngredients"] }
             };
-            return outputRecipie;
+            return outputRecipe;
+        }
+
+        private string GetInfoURL(string recipeID)
+        {
+            string searchURL = "https://api.spoonacular.com/recipes/"+ recipeID +"/information?apiKey=" + apiKey + "&includeNutrition=false";
+            return searchURL;
+            
         }
 
         
