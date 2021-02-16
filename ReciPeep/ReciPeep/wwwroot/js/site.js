@@ -8,6 +8,8 @@ let vm = new Vue({
     data: function () {
         return {
             submitted: false,
+            vegetarian: false,
+            vegan: false,
             show: true,
             ingredients: [{ ingredient: '' }],
             stringifyIngredients: '',
@@ -23,7 +25,15 @@ let vm = new Vue({
             this.submitted = false;
         },
 
+        setVegetarian() {
+            let temp = !this.vegetarian
+            this.vegetarian = temp;
+        },
 
+        setVegan() {
+            let temp = !this.vegan
+            this.vegan = temp;
+        },
 
         pushIngredients: function () {
             this.recipes = [];
@@ -42,14 +52,9 @@ let vm = new Vue({
                 return response.json();
             }).then(data => {
                 this.recipes = data;
-            }).catch(error => { alert(error); });            
+            }).catch(error => { alert(error); });
 
             this.submitted = true;
-
         }
     }
 });
-
-
-
-

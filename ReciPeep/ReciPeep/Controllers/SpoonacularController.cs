@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 
 namespace ReciPeep.Controllers
@@ -35,6 +33,7 @@ namespace ReciPeep.Controllers
                     BadRequest(e);
                 }
                 return Ok(responseBody);
+
             }
             else
             {
@@ -72,16 +71,5 @@ namespace ReciPeep.Controllers
 
         }
 
-        private JObject CutObject(JArray recipie){
-            JObject outputRecipie = new JObject{
-                { "title", recipie[0]["title"] },
-                { "image", recipie[0]["image"] },
-                { "missedIngredients", recipie[0]["missedIngredients"] },
-                { "usedIngredients", recipie[0]["usedIngredients"] }
-            };
-            return outputRecipie;
-        }
-
-        
     }
 }

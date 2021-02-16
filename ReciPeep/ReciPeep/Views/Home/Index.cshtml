@@ -3,6 +3,8 @@
 }
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 
 @* Div for vue *@
 <div id="index">
@@ -40,9 +42,11 @@
 
         <div class="d-flex flex-row-reverse pt-3 mb-3 sticky-top">
             <button class="btn btn-secondary ml-1" v-on:click="changeIngredients">Change Ingredients</button>
-            <button class="btn btn-danger ml-1">
-                
-            </button>
+            <button class="btn btn-danger ml-1"></button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-outline-success" v-on:click="setVegetarian" data-bs-toggle="button" autocomplete="off">Vegetarian</button>
+                <button type="button" class="btn btn-outline-success" v-on:click="setVegan" data-bs-toggle="button" autocomplete="off">Vegan</button>
+            </div>
         </div>
 
         <div class="row card-group mt-3">
@@ -66,10 +70,5 @@
                 </div>
             </div>
         </div>
-
     </div>
-
 </div>
-
-
-
