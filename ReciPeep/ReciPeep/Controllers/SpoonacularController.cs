@@ -44,6 +44,7 @@ namespace ReciPeep.Controllers
         public async Task<IActionResult> IngredientSearch(string ingredientsString)
         {
             string[] ingredients = ingredientsString.Split(",");
+            int numRecipes = 10;
 
             HttpClient client = new HttpClient();
             string responseBody = @"{}";
@@ -58,7 +59,7 @@ namespace ReciPeep.Controllers
                     url += ",+";
                 }
             }
-            url += "&number=10";
+            url += "&number=" + numRecipes.ToString();
 
             // Call asynchronous network methods in a try/catch block to handle exceptions.         
             try
@@ -66,7 +67,7 @@ namespace ReciPeep.Controllers
                 HttpResponseMessage response = await client.GetAsync(url);
                 response.EnsureSuccessStatusCode();
                 responseBody = await response.Content.ReadAsStringAsync();
-                Console.WriteLine("loaded response");
+                Console.WriteLine("loaded list of recipes");
             }
             catch (HttpRequestException e)
             {
@@ -84,7 +85,7 @@ namespace ReciPeep.Controllers
                     HttpResponseMessage response = await client.GetAsync(GetInfoURL(responseData[i]["id"].ToString()));
                     response.EnsureSuccessStatusCode();
                     responseBody = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine("loaded response");
+                    Console.WriteLine("loaded extra info for recipe "+(i+1).ToString());
                 }
                 catch (HttpRequestException e)
                 {
@@ -92,7 +93,6 @@ namespace ReciPeep.Controllers
                     Console.WriteLine("Message :{0} ", e.Message);
                 }
                 skinnyRecipes.Add(CutObject(responseData[i],JObject.Parse(responseBody)));
-                //skinnyRecipe.Add();
 
             }
             
