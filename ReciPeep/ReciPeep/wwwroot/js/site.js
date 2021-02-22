@@ -3,6 +3,15 @@
 
 // Write your JavaScript code.
 
+function enterKeyPressed(event) {
+    if (event.keyCode == 13) {
+        console.log("Enter key is pressed");
+        return true;
+    } else {
+        return false;
+    }
+}
+
 let vm = new Vue({
     el: '#index',
     data: function () {
@@ -11,14 +20,14 @@ let vm = new Vue({
             vegetarian: false,
             vegan: false,
             show: true,
-            ingredients: [{ ingredient: '' }],
+            ingredients: [{ingredient:""}],
             stringifyIngredients: '',
             recipes: []
         }
     },
     methods: {
         addIngredient: function () {
-            this.ingredients.push({ ingredient: '' });
+            this.ingredients.push({ ingredient: "" });            
         },
 
         changeIngredients() {
