@@ -135,10 +135,18 @@ namespace ReciPeep.Controllers
                 { "title", recipe["title"] },
                 { "image", recipe["image"] },
                 { "sourceUrl", extraInfo["sourceUrl"] },
-                { "missedIngredientCount", recipe["missedIngredientCount"] },
-                { "missedIngredients", recipe["missedIngredients"] },
-                { "usedIngredients", recipe["usedIngredients"] }
             };
+            if(recipe["missedIngredientCount"] != null)
+            {
+                outputRecipe.Add("missedIngredientCount", recipe["missedIngredientCount"]);
+                outputRecipe.Add("missedIngredients", recipe["missedIngredients"]);
+                outputRecipe.Add("usedIngredients", recipe["usedIngredients"]);
+            }
+            if(recipe["extendedIngredients"] != null)
+            {
+                outputRecipe.Add("ingredients", recipe["extendedIngredients"]);
+            }
+            
             return outputRecipe;
         }
 
