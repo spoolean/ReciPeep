@@ -36,7 +36,33 @@ namespace ReciPeep.Controllers
                 Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
-            return Ok(responseBody);
+
+            JObject ResponseObject = JObject.Parse(responseBody);
+            JArray responseData = JArray.Parse(ResponseObject["recipes"].ToString());
+            JArray skinnyRecipes = new JArray();
+
+
+            for (int i = 0; i < responseData.Count; i++)
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(GetInfoURL(responseData[i]["id"].ToString()));
+                    response.EnsureSuccessStatusCode();
+                    responseBody = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine("loaded extra info for recipe " + (i + 1).ToString());
+                }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine("\nException Caught!");
+                    Console.WriteLine("Message :{0} ", e.Message);
+                }
+                skinnyRecipes.Add(CutObject(responseData[i], JObject.Parse(responseBody)));
+
+            }
+
+            JArray sortedSkinnyRecipes = new JArray(skinnyRecipes.OrderBy(obj => (string)obj["missedIngredientCount"]));
+
+            return Ok(sortedSkinnyRecipes.ToString());
         }
 
 
