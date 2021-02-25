@@ -2,16 +2,48 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 .footer {
-    position: fixed;
+    position: absolute;
     left: 0;
-    bottom: 0;
+    bottom: 20px;
     width: 100%;
-    color: white;
-    align-content:center;
 }
 
 * {
     font-family: 'Maven Pro', sans-serif;
+}
+
+.loader {
+    position: absolute;
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    left: calc(50% - 100px);
+    top: calc(50% - 100px);
+    width: 200px;
+    height: 200px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 [v-cloak] { display:none; }
