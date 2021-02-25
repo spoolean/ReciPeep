@@ -4,18 +4,28 @@
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
 
+
+
 @* Div for vue *@
 <div id="index" style="height:100%">
     @* First 'page' *@
     <div v-if="!submitted" class="container">
 
-        @* Top bar that scrolls with page *@
-        <div class="d-flex flex-row-reverse pt-3 mb-3 sticky-top">
-
+        <div class="container text-white">
+            <h3 class="display-3">Recipeep</h3>
+            <p>Welcome to Recipeep simply show us (via the camera icon) or type the ingredients you have left over, and we will try to find you some tasty meals from across the internet</p>
         </div>
 
-        <div v-for="ingredient in ingredients" class="input-group pb-3">
-            <input v-model="ingredient.ingredient" v-on:keydown.enter="addIngredient" onkeypress="return enterKeyPressed(event)" type="text" class="form-control" placeholder="Add an ingredient">
+        <div class="container">
+            <div class="row">
+                <input v-for="(ingredient, index) in ingredients" 
+                       v-model="ingredient.ingredient" 
+                       v-on:keydown.enter="addIngredient(index)" 
+                       class="form-control mb-3" type="text" 
+                       placeholder="Add an ingredient (leave blank if you're out of ingredients)" 
+                       ref="ingredientsElements">
+            </div>
+
         </div>
 
         <div class="container">
@@ -24,17 +34,18 @@
             </div>
         </div>
 
-        <div class="footer" >
-            <button class="btn btn-danger ml-1">
+        @*<footer class="container-fluid">
+            <button class="btn btn-danger">
                 <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-camera-fill" viewBox="0 0 16 16">
                     <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                     <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
                 </svg>
             </button>
-        </div>
+        </footer>*@
 
-      
+    </div>
 
+    <div class="loader" v-if="loading" v-cloak>
     </div>
 
     @* Second 'page' *@
@@ -42,30 +53,29 @@
 
         <div class="d-flex flex-row-reverse pt-3 mb-3 sticky">
             <button class="btn btn-secondary ml-1" v-on:click="changeIngredients">Change Ingredients</button>
-            <button class="btn btn-danger ml-1"></button>
             <div class="btn-group">
                 <button type="button" class="btn btn-outline-success" v-on:click="setVegetarian" data-bs-toggle="button" autocomplete="off">Vegetarian</button>
                 <button type="button" class="btn btn-outline-success" v-on:click="setVegan" data-bs-toggle="button" autocomplete="off">Vegan</button>
             </div>
         </div>
 
-        <div class="row card-group mt-3">
+        <div class="row g-3">
             <div class="col-md-4" v-for="recipe in recipes">
-                <div class="card mb-3 border-secondary">
+                <div class="card h-100  border-secondary">
                     <img :src="recipe.image" class="card-img-top">
                     <div class="card-body bg-dark text-white">
                         <h5 class="card-title">{{recipe.title}}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Used Ingredients</h6>
+                        <h6 class="card-subtitle mb-2 text-muted" v-if="recipe.usedIngredients != null || recipe.usedIngredients != 'undefined'">You Have:</h6>
                         <ul>
                             <li v-for="used in recipe.usedIngredients">{{ used.name }}</li>
                         </ul>
-                        <h6 class="card-subtitle mb-2 text-muted">Missing Ingredients</h6>
+                        <h6 class="card-subtitle mb-2 text-muted">You're Missing: </h6>
                         <ul>
                             <li v-for="missing in recipe.missedIngredients">{{ missing.name }}</li>
                         </ul>
-                        <div class="row">
-                            <a :href="recipe.link" class="btn btn-primary flex-fill ml-3 mr-3">Open Method</a>
-                        </div>
+                    </div>
+                    <div class="card-footer bg-dark border-0 p-0">
+                        <a :href="recipe.sourceUrl" class="btn btn-primary col-12" target="_blank">Open Method</a>
                     </div>
                 </div>
             </div>
