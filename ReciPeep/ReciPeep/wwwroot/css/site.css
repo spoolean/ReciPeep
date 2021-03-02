@@ -17,10 +17,10 @@ for details on configuring this project to bundle and minify static web assets. 
     border: 16px solid #f3f3f3;
     border-radius: 50%;
     border-top: 16px solid #3498db;
-    left: calc(50% - 100px);
-    top: calc(50% - 100px);
-    width: 200px;
-    height: 200px;
+    left: calc(50% - 80px);
+    top: calc(50% - 80px);
+    width: 160px;
+    height: 160px;
     -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 2s linear infinite;
 }

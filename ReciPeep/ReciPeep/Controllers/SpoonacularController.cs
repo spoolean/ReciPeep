@@ -21,7 +21,7 @@ namespace ReciPeep.Controllers
             //variables for storing the url to call as well as the string to store the result
             HttpClient client = new HttpClient();
             string responseBody = @"{}";
-            string url = "https://api.spoonacular.com/recipes/random?apiKey=" + apiKey + "&number=1";
+            string url = "https://api.spoonacular.com/recipes/random?apiKey=" + apiKey + "&number=10";
 
             // Call asynchronous network methods in a try/catch block to handle exceptions.         
             try

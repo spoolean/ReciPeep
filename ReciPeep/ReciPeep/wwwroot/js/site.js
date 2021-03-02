@@ -10,6 +10,7 @@ let vm = new Vue({
     data: function () {
         return {
             loading: false,
+            imfeelinglucky: false,
             submitted: false,
             vegetarian: false,
             vegan: false,
@@ -31,7 +32,8 @@ let vm = new Vue({
         },
 
         isNotNullOrWhitespace(input) {
-            if (typeof input !== 'undefined' || input != null) return true;
+            if (input !== 'undefined' || input != null || input.length > 0) { return true; }
+            else { return false; }
         },
 
         changeIngredients() {
@@ -48,8 +50,29 @@ let vm = new Vue({
             this.vegan = temp;
         },
 
+        imFeelingLucky() {
+            this.loading = true;
+            this.imfeelinglucky = true;
+
+            this.recipes = [];
+
+            fetch(`${window.location.origin}/spoonacular/feelinglucky`
+            ).then(response => {
+                if (!response.ok) {
+                    throw new Error("This dont work");
+                }
+                return response.json();
+            }).then(data => {
+                this.recipes = data;
+                this.loading = false;
+            }).catch(error => { alert(error); });
+
+            this.submitted = true;
+        },
+
         pushIngredients: function () {
             this.loading = true;
+            this.imfeelinglucky = false;
 
             this.recipes = [];
             this.stringifyIngredients = '';
