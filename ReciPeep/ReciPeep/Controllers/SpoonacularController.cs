@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
-
+using System.Collections.Generic;
 
 namespace ReciPeep.Controllers
 {
@@ -13,6 +13,7 @@ namespace ReciPeep.Controllers
     {
         //Variable storing the key to the spoonacular account. This should be removed before making it public
         private string apiKey = "19276f6da3644e54981cc0d2dea5c426";
+        private Boolean quotaReached = false;  
 
         //Function for getting a random recipe
         [HttpGet("FeelingLucky")]
@@ -23,20 +24,31 @@ namespace ReciPeep.Controllers
             string responseBody = @"{}";
             string url = "https://api.spoonacular.com/recipes/random?apiKey=" + apiKey + "&number=1";
 
-            // Call asynchronous network methods in a try/catch block to handle exceptions.         
-            try
+            if (!quotaReached)
             {
-                HttpResponseMessage response = await client.GetAsync(url);
-                response.EnsureSuccessStatusCode();
-                responseBody = await response.Content.ReadAsStringAsync();
+                // Call asynchronous network methods in a try/catch block to handle exceptions.         
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(url);
+                    response.EnsureSuccessStatusCode();
+                    responseBody = await response.Content.ReadAsStringAsync();
 
-                JObject recipeTemp = JObject.Parse(responseBody);
-                Console.WriteLine("loaded random recipe");
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", e.Message);
+                    JObject recipeTemp = JObject.Parse(responseBody);
+                    Console.WriteLine("loaded random recipe");
+
+                    var headers = response.Headers;
+                    IEnumerable<string> values;
+                    if (headers.TryGetValues("X-API-Quota-Used", out values))
+                    {
+                        string quotaUsed = values.First();
+                        CheckQuota(quotaUsed);
+                    }
+                }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine("\nException Caught!");
+                    Console.WriteLine("Message :{0} ", e.Message);
+                }
             }
 
             //convert the data to desired json types
@@ -80,19 +92,30 @@ namespace ReciPeep.Controllers
             }
             url += "&number=" + numRecipes.ToString();
 
-            // Call asynchronous network methods in a try/catch block to handle exceptions.         
-            try
+            if (!quotaReached)
             {
-                HttpResponseMessage response = await client.GetAsync(url);
-                response.EnsureSuccessStatusCode();
-                responseBody = await response.Content.ReadAsStringAsync();
-                Console.WriteLine("loaded list of recipes");
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", e.Message);
-            }
+                // Call asynchronous network methods in a try/catch block to handle exceptions.         
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(url);
+                    response.EnsureSuccessStatusCode();
+                    responseBody = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine("loaded list of recipes");
+                    
+                    var headers = response.Headers;                   
+                    IEnumerable<string> values;
+                    if (headers.TryGetValues("X-API-Quota-Used", out values))
+                    {
+                        string quotaUsed = values.First();
+                        CheckQuota(quotaUsed);
+                    }                   
+                }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine("\nException Caught!");
+                    Console.WriteLine("Message :{0} ", e.Message);
+                }
+            }            
 
             JArray responseData = JArray.Parse(responseBody);
             JArray skinnyRecipes = new JArray();
@@ -115,18 +138,28 @@ namespace ReciPeep.Controllers
             //variables for storing the url to call as well as the string to store the result
             HttpClient client = new HttpClient();
             string responseBody = @"{}";
+            if (!quotaReached)
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(GetInfoURL(recipeID));
+                    response.EnsureSuccessStatusCode();
+                    responseBody = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine("loaded extra info for recipe " + recipeID);
 
-            try
-            {
-                HttpResponseMessage response = await client.GetAsync(GetInfoURL(recipeID));
-                response.EnsureSuccessStatusCode();
-                responseBody = await response.Content.ReadAsStringAsync();
-                Console.WriteLine("loaded extra info for recipe " + recipeID);
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", e.Message);
+                    var headers = response.Headers;
+                    IEnumerable<string> values;
+                    if (headers.TryGetValues("X-API-Quota-Used", out values))
+                    {
+                        string quotaUsed = values.First();
+                        CheckQuota(quotaUsed);
+                    }
+                }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine("\nException Caught!");
+                    Console.WriteLine("Message :{0} ", e.Message);
+                }
             }
 
             JObject responseData = JObject.Parse(responseBody);
@@ -170,6 +203,20 @@ namespace ReciPeep.Controllers
             string searchURL = "https://api.spoonacular.com/recipes/"+ recipeID +"/information?apiKey=" + apiKey + "&includeNutrition=false";
             return searchURL;
             
+        }
+
+        private void CheckQuota(string pointsUsed)
+        {
+            decimal pointsInt = Convert.ToDecimal(pointsUsed);
+            if (pointsInt >= 145)
+            {
+                quotaReached = true;
+                Console.WriteLine("Quota reached");
+            }
+            else
+            {
+                Console.WriteLine((150 - pointsInt).ToString()+" Points remaining");
+            }
         }
 
         
