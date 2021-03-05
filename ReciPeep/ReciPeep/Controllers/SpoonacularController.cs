@@ -47,34 +47,21 @@ namespace ReciPeep.Controllers
             //loop through the list of recipes for extra info
             for (int i = 0; i < responseData.Count; i++)
             {
-                //call the extra info based on the recipe id
-                try
-                {
-                    HttpResponseMessage response = await client.GetAsync(GetInfoURL(responseData[i]["id"].ToString()));
-                    response.EnsureSuccessStatusCode();
-                    responseBody = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine("loaded extra info for recipe " + (i + 1).ToString());
-                }
-                catch (HttpRequestException e)
-                {
-                    Console.WriteLine("\nException Caught!");
-                    Console.WriteLine("Message :{0} ", e.Message);
-                }
                 //create add to an array a cut down version of the recipe based on both sets of data
-                skinnyRecipes.Add(CutObject(responseData[i], JObject.Parse(responseBody)));
+                skinnyRecipes.Add(CutObject(responseData[i])); //, JObject.Parse(responseBody)
 
             }
             return Ok(skinnyRecipes.ToString());
         }
 
-
+        //Perform a recipe search with a given string of ingredients
         [HttpGet("GetRecipes/{ingredientsString}")]
         public async Task<IActionResult> IngredientSearch(string ingredientsString)
         {
             //split up the ingredients string into a list
             string[] ingredients = ingredientsString.Split(",");
             //store the number of wanted recipes 
-            int numRecipes = 10;
+            int numRecipes = 21;
 
 
             //variables for storing the url to call as well as the string to store the result
@@ -112,20 +99,7 @@ namespace ReciPeep.Controllers
 
             for (int i = 0; i < responseData.Count; i++) 
             {
-                try
-                {
-                    HttpResponseMessage response = await client.GetAsync(GetInfoURL(responseData[i]["id"].ToString()));
-                    response.EnsureSuccessStatusCode();
-                    responseBody = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine("loaded extra info for recipe "+(i+1).ToString());
-                }
-                catch (HttpRequestException e)
-                {
-                    Console.WriteLine("\nException Caught!");
-                    Console.WriteLine("Message :{0} ", e.Message);
-                }
-                skinnyRecipes.Add(CutObject(responseData[i],JObject.Parse(responseBody)));
-
+                skinnyRecipes.Add(CutObject(responseData[i]));
             }
             
             JArray sortedSkinnyRecipes = new JArray(skinnyRecipes.OrderBy(obj => (string)obj["missedIngredientCount"]));
@@ -133,8 +107,36 @@ namespace ReciPeep.Controllers
             return Ok(sortedSkinnyRecipes.ToString());
         }
 
+        [HttpGet("GetUrl/{recipeID}")]
+        public async Task<string> GetUrlFromID(string recipeID)
+        {
+            string sourceURL = "";
+
+            //variables for storing the url to call as well as the string to store the result
+            HttpClient client = new HttpClient();
+            string responseBody = @"{}";
+
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(GetInfoURL(recipeID));
+                response.EnsureSuccessStatusCode();
+                responseBody = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("loaded extra info for recipe " + recipeID);
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+
+            JObject responseData = JObject.Parse(responseBody);
+            sourceURL = responseData["sourceUrl"].ToString();
+
+            return sourceURL;
+        }
+
         //create a cutdown version of the recipe 
-        private JObject CutObject(JToken recipe,JObject extraInfo)
+        private JObject CutObject(JToken recipe)
         {
             //create an object with an ID, title, image and url
             JObject outputRecipe = new JObject
@@ -142,7 +144,7 @@ namespace ReciPeep.Controllers
                 { "id", recipe["id"] },
                 { "title", recipe["title"] },
                 { "image", recipe["image"] },
-                { "sourceUrl", extraInfo["sourceUrl"] },
+                //{ "sourceUrl", extraInfo["sourceUrl"] },
             };
             //if it's from an ingredients search
             if(recipe["missedIngredientCount"] != null)
