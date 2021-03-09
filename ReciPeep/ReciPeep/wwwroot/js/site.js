@@ -3,13 +3,12 @@
 
 // Write your JavaScript code.
 
-Vue.Component = {}
-
 let vm = new Vue({
     el: '#index',
-    data: function () {
+    data: () => {
         return {
             loading: false,
+            imfeelinglucky: false,
             submitted: false,
             vegetarian: false,
             vegan: false,
@@ -31,7 +30,8 @@ let vm = new Vue({
         },
 
         isNotNullOrWhitespace(input) {
-            if (typeof input !== 'undefined' || input != null) return true;
+            if (input !== 'undefined' || input != null || input.length > 0) { return true; }
+            else { return false; }
         },
 
         changeIngredients() {
@@ -48,8 +48,29 @@ let vm = new Vue({
             this.vegan = temp;
         },
 
+        imFeelingLucky() {
+            this.loading = true;
+            this.imfeelinglucky = true;
+
+            this.recipes = [];
+
+            fetch(`${window.location.origin}/spoonacular/feelinglucky`
+            ).then(response => {
+                if (!response.ok) {
+                    throw new Error("This dont work");
+                }
+                return response.json();
+            }).then(data => {
+                this.recipes = data;
+                this.loading = false;
+            }).catch(error => { alert(error); });
+
+            this.submitted = true;
+        },
+
         pushIngredients: function () {
             this.loading = true;
+            this.imfeelinglucky = false;
 
             this.recipes = [];
             this.stringifyIngredients = '';
@@ -62,7 +83,7 @@ let vm = new Vue({
             fetch(`${window.location.origin}/spoonacular/getrecipes/${this.stringifyIngredients}`
             ).then(response => {
                 if (!response.ok) {
-                    throw new Error("This dont work");
+                    throw new Error("We have encountered an error, this may be because we ar eover the quota");
                 }
                 return response.json();
             }).then(data => {
@@ -71,6 +92,22 @@ let vm = new Vue({
             }).catch(error => { alert(error); });
 
             this.submitted = true;
-        }
+        },
+
+        getURL(id) {
+            fetch(`${window.location.origin}/spoonacular/geturl/${id}`
+            ).then(response => {
+                if (!response.ok) {
+                    throw new Error("We have encountered an error, this url might not exist");
+                }
+                return response.text();
+            }).then(data => {
+                window.open(data);
+            }).catch(error => { alert(error); });
+        },
+
+        imageRecognition() {
+            alert(document.getElementById("imageUpload").innerHTML);
+        },
     }
 });

@@ -20,6 +20,9 @@ namespace ReciPeep
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    //webBuilder.UseIISIntegration();
+                    //webBuilder.UseKestrel();
+                    //webBuilder.UseUrls("http://192.168.0.123:44372");
                     webBuilder.UseStartup<Startup>();
                 });
     }
