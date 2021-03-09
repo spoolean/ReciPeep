@@ -3,11 +3,9 @@
 
 // Write your JavaScript code.
 
-Vue.Component = {}
-
 let vm = new Vue({
     el: '#index',
-    data: function () {
+    data: () => {
         return {
             loading: false,
             imfeelinglucky: false,
@@ -85,7 +83,7 @@ let vm = new Vue({
             fetch(`${window.location.origin}/spoonacular/getrecipes/${this.stringifyIngredients}`
             ).then(response => {
                 if (!response.ok) {
-                    throw new Error("This dont work");
+                    throw new Error("We have encountered an error, this may be because we ar eover the quota");
                 }
                 return response.json();
             }).then(data => {
@@ -94,6 +92,22 @@ let vm = new Vue({
             }).catch(error => { alert(error); });
 
             this.submitted = true;
-        }
+        },
+
+        getURL(id) {
+            fetch(`${window.origin.location}/geturl/${id}`
+            ).then(response => {
+                if (!response.ok) {
+                    throw new Error("We have encountered an error, this url might not exist");
+                }
+                return response.json();
+            }).then(data => {
+                window.open(data);
+            }).catch(error => { alert(error); });
+        },
+
+        imageRecognition() {
+            alert(document.getElementById("imageUpload").innerHTML);
+        },
     }
 });
