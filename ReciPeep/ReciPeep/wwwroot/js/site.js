@@ -95,12 +95,12 @@ let vm = new Vue({
         },
 
         getURL(id) {
-            fetch(`${window.origin.location}/geturl/${id}`
+            fetch(`${window.location.origin}/spoonacular/geturl/${id}`
             ).then(response => {
                 if (!response.ok) {
                     throw new Error("We have encountered an error, this url might not exist");
                 }
-                return response.json();
+                return response.text();
             }).then(data => {
                 window.open(data);
             }).catch(error => { alert(error); });
