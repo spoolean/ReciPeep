@@ -40,12 +40,22 @@
         @* Bottom buttons to move to recipe cards with recipes or using feeling lucky *@
         <div class="container">
             <div class="row">
-                <div class="col-6">
+                <div class="col-lg-4">
                     <div class="row">
                         <button class="btn btn-success" v-on:click="pushIngredients">Get Recipes</button>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-lg-2">
+                    <div class="row">
+                        <button type="button" class="btn btn-outline-success" v-on:click="vegetarian = !vegetarian" data-bs-toggle="button" autocomplete="off">Vegetarian</button>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="row">
+                        <button type="button" class="btn btn-outline-success" v-on:click="vegan = !vegan" data-bs-toggle="button" autocomplete="off">Vegan</button>
+                    </div>
+                </div>
+                <div class="col-lg-4">
                     <div class="row">
                         <button class="btn btn-outline-secondary" v-on:click="imFeelingLucky">I'm feeling lucky</button>
                     </div>
@@ -86,11 +96,7 @@
     <div class="container" v-if="submitted" v-cloak>
 
         <div class="d-flex flex-row-reverse pt-3 mb-3 sticky">
-            <button class="btn btn-secondary ml-1" v-on:click="changeIngredients">Change Ingredients</button>
-            <div class="btn-group">
-                <button type="button" class="btn btn-outline-success" v-on:click="setVegetarian" data-bs-toggle="button" autocomplete="off">Vegetarian</button>
-                <button type="button" class="btn btn-outline-success" v-on:click="setVegan" data-bs-toggle="button" autocomplete="off">Vegan</button>
-            </div>
+            <button class="btn btn-secondary ml-1" v-on:click="submitted = false">Change Ingredients</button>
         </div>
 
         <div class="row g-3">

@@ -30,22 +30,7 @@ let vm = new Vue({
         },
 
         isNotNullOrWhitespace(input) {
-            if (input !== 'undefined' || input != null || input.length > 0) { return true; }
-            else { return false; }
-        },
-
-        changeIngredients() {
-            this.submitted = false;
-        },
-
-        setVegetarian() {
-            let temp = !this.vegetarian
-            this.vegetarian = temp;
-        },
-
-        setVegan() {
-            let temp = !this.vegan
-            this.vegan = temp;
+            return (input !== 'undefined' || input != null || input.length > 0) ? true : false;
         },
 
         imFeelingLucky() {
