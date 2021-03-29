@@ -107,7 +107,18 @@ let vm = new Vue({
         },
 
         imageRecognition() {
-            alert(document.getElementById("imageUpload").innerHTML);
+            let file = document.getElementById('imageUpload').files[0];
+            let blob = new Promise(resolve => file.toBlob(resolve, 'image/png'));
+
+            fetch(`${window.location.origin}/spoonacular/${blob}`
+            ).then(response => {
+                if (!response.ok) {
+                    throw new Error("Sorry, we can't read that image, try again");
+                }
+                return response.json();
+            }).then(data => {
+                
+            }).catch(error => { alert(error); });
         },
     }
 });
