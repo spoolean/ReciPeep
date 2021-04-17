@@ -8,6 +8,12 @@ namespace ReciPeep.Controllers
 {
     public class MLController : Controller
     {
-        
+        [HttpGet("imagerecognition/{blobImage}")]
+        public async Task<string[]> RecogniseImage(string blobImage)
+        {
+
+            String[] ingredients = ["Eggs","Water"];
+            return ingredients;
+        }
     }
 }
