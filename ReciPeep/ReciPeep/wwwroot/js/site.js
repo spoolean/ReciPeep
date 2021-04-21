@@ -15,7 +15,8 @@ let vm = new Vue({
             show: true,
             ingredients: [{ingredient:""}],
             stringifyIngredients: '',
-            recipes: []
+            recipes: [],
+            toasts: [],
         }
     },
     methods: {
@@ -74,7 +75,10 @@ let vm = new Vue({
             }).then(data => {
                 this.recipes = data;
                 this.loading = false;
-            }).catch(error => { alert(error); });
+            }).catch(error => {
+                alert(error);
+                this.loading = false;
+            });
 
             this.submitted = true;
         },
@@ -92,7 +96,18 @@ let vm = new Vue({
         },
 
         imageRecognition() {
-            alert(document.getElementById("imageUpload").innerHTML);
+
+            let blob = new Promise(resolve => document.getElementById('imageUpload').files[0])
+
+            fetch(`${window.location.origin}/imagerecognition/${blob}`
+            ).then(response => {
+                if (!response.ok) {
+                    throw new Error("We have encountered an error, we may have not been able to process your image");
+                }
+                return response.json();
+            }).then(data => {
+                alert("we have a response!")
+            }).catch(error => { alert(error); });
         },
     }
 });
