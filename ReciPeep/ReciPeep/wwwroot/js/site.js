@@ -69,7 +69,7 @@ let vm = new Vue({
             fetch(`${window.location.origin}/spoonacular/getrecipes/${this.stringifyIngredients}`
             ).then(response => {
                 if (!response.ok) {
-                    throw new Error("We have encountered an error, this may be because we ar eover the quota");
+                    throw new Error("We have encountered an error, this may be because we are over the quota");
                 }
                 return response.json();
             }).then(data => {
