@@ -96,17 +96,17 @@ let vm = new Vue({
         },
 
         imageRecognition() {
-
-            let blob = new Promise(resolve => document.getElementById('imageUpload').files[0])
+            let file = document.getElementById('imageUpload').files[0];
+            let blob = new Promise(resolve => file.toBlob(resolve, 'image/png'));
 
             fetch(`${window.location.origin}/imagerecognition/${blob}`
             ).then(response => {
                 if (!response.ok) {
-                    throw new Error("We have encountered an error, we may have not been able to process your image");
+                    throw new Error("Sorry, we can't read that image, try again");
                 }
                 return response.json();
             }).then(data => {
-                alert("we have a response!")
+                alert("We have a response")
             }).catch(error => { alert(error); });
         },
     }
