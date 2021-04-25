@@ -15,7 +15,8 @@ let vm = new Vue({
             show: true,
             ingredients: [{ingredient:""}],
             stringifyIngredients: '',
-            recipes: []
+            recipes: [],
+            toasts: [],
         }
     },
     methods: {
@@ -30,22 +31,7 @@ let vm = new Vue({
         },
 
         isNotNullOrWhitespace(input) {
-            if (input !== 'undefined' || input != null || input.length > 0) { return true; }
-            else { return false; }
-        },
-
-        changeIngredients() {
-            this.submitted = false;
-        },
-
-        setVegetarian() {
-            let temp = !this.vegetarian
-            this.vegetarian = temp;
-        },
-
-        setVegan() {
-            let temp = !this.vegan
-            this.vegan = temp;
+            return (input !== 'undefined' || input != null || input.length > 0) ? true : false;
         },
 
         imFeelingLucky() {
@@ -83,13 +69,16 @@ let vm = new Vue({
             fetch(`${window.location.origin}/spoonacular/getrecipes/${this.stringifyIngredients}`
             ).then(response => {
                 if (!response.ok) {
-                    throw new Error("We have encountered an error, this may be because we ar eover the quota");
+                    throw new Error("We have encountered an error, this may be because we are over the quota");
                 }
                 return response.json();
             }).then(data => {
                 this.recipes = data;
                 this.loading = false;
-            }).catch(error => { alert(error); });
+            }).catch(error => {
+                alert(error);
+                this.loading = false;
+            });
 
             this.submitted = true;
         },
@@ -110,14 +99,14 @@ let vm = new Vue({
             let file = document.getElementById('imageUpload').files[0];
             let blob = new Promise(resolve => file.toBlob(resolve, 'image/png'));
 
-            fetch(`${window.location.origin}/spoonacular/${blob}`
+            fetch(`${window.location.origin}/imagerecognition/${blob}`
             ).then(response => {
                 if (!response.ok) {
                     throw new Error("Sorry, we can't read that image, try again");
                 }
                 return response.json();
             }).then(data => {
-                
+                alert("We have a response")
             }).catch(error => { alert(error); });
         },
     }
