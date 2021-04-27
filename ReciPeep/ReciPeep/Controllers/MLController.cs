@@ -14,18 +14,20 @@ namespace ReciPeep.Controllers
     [Route("MLController")]
     public class MLController : Controller
     {
-        [HttpGet("imagerecognition/{blobImage}")]
+        [HttpGet("imagerecognition")]
         public async Task<IActionResult> RecogniseImage(string blobString)
         {
-            //remove below line when front end is set up
-            blobString = "";
+
             //convert to blob
+            Console.WriteLine(blobString.GetType());
             byte[] blob = Convert.FromBase64String(blobString);
             //set up array of ingredients to be recieved
+
             JObject ingredients = new JObject();//delete contents when ready
-            ingredients.Add("Ingredient 1", "Eggs");
+            ingredients.Add("Eggs", "0.893");
 
             //send to AI
+            //creates the images file as jpg
             System.IO.File.WriteAllBytes("Models\\pic.jpg", blob);
             Process runPythonScrypt = new Process
             {
@@ -48,7 +50,7 @@ namespace ReciPeep.Controllers
                 Console.WriteLine("Message :{0} ", e.Message);
             }
 
-
+            
             return Ok(ingredients.ToString());
         }
     }
