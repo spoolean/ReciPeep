@@ -13,7 +13,7 @@ let vm = new Vue({
             vegetarian: false,
             vegan: false,
             show: true,
-            ingredients: [{ingredient:""}],
+            ingredients: [{ ingredient: "" }],
             stringifyIngredients: '',
             recipes: [],
             toasts: [],
@@ -97,16 +97,19 @@ let vm = new Vue({
 
         imageRecognition() {
             let file = document.getElementById('imageUpload').files[0];
-            let blob = new Promise(resolve => file.toBlob(resolve, 'image/png'));
+            const formData = new FormData();
+            formData.append('image', file);
 
-            fetch(`${window.location.origin}/imagerecognition/${blob}`
-            ).then(response => {
+            fetch(`${window.location.origin}/mlcontroller/imagerecognition`, {
+                method: 'GET',
+                body: formData
+            }).then(response => {
                 if (!response.ok) {
                     throw new Error("Sorry, we can't read that image, try again");
                 }
                 return response.json();
             }).then(data => {
-                alert("We have a response")
+                this.ingredients = data;
             }).catch(error => { alert(error); });
         },
     }
