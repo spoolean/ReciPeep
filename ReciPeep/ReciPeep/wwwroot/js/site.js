@@ -97,20 +97,27 @@ let vm = new Vue({
 
         imageRecognition() {
             let file = document.getElementById('imageUpload').files[0];
-            const formData = new FormData();
-            formData.append('image', file);
 
-            fetch(`${window.location.origin}/mlcontroller/imagerecognition`, {
-                method: 'GET',
-                body: formData
-            }).then(response => {
-                if (!response.ok) {
-                    throw new Error("Sorry, we can't read that image, try again");
-                }
-                return response.json();
-            }).then(data => {
-                this.ingredients = data;
-            }).catch(error => { alert(error); });
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+            fileReader.onload = () => {
+                let fileString = fileReader.result;
+
+                fetch(`${window.location.origin}/mlcontroller/imagerecognition`, {
+                    method: 'POST',
+                    body: JSON.stringify({ filename: file.name, image: fileString }),
+                    headers: { 'Content-Type': 'application/json' }
+                }).then(response => {
+                    if (!response.ok) {
+                        throw new Error("Sorry, we can't read that image, try again");
+                    }
+                    return response.json();
+                }).then(data => {
+                    console.log(data);
+                    this.ingredients.push(data);
+                    this.ingredients.push({ ingredient: "" });
+                }).catch(error => { console.log(error); });
+            }
         },
     }
 });
