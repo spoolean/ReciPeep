@@ -114,7 +114,7 @@ let vm = new Vue({
                     return response.json();
                 }).then(data => {
                     console.log(data);
-                    this.ingredients.push(data);
+                    this.ingredients = [data];
                     this.ingredients.push({ ingredient: "" });
                 }).catch(error => { console.log(error); });
             }
