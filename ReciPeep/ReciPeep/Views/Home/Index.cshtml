@@ -100,7 +100,7 @@
     <div class="container" v-if="submitted" v-cloak>
 
         <div class="d-flex flex-row-reverse pt-3 mb-3 sticky">
-            <button class="btn btn-secondary ml-1" v-on:click="submitted = false">Change Ingredients</button>
+            <button class="btn btn-secondary ml-1" v-on:click="submitted = false; loading = false">Change Ingredients</button>
         </div>
 
         <div class="row g-3">

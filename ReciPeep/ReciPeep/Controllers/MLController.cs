@@ -8,27 +8,29 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
+using ReciPeep.Models;
 
 namespace ReciPeep.Controllers
 {
     [Route("MLController")]
     public class MLController : Controller
     {
-        [HttpGet("imagerecognition")]
-        public async Task<IActionResult> RecogniseImage(string blobString)
+        [HttpPost]
+        [Route("imagerecognition")]
+        public async Task<IActionResult> RecogniseImage([FromBody] ImagePayloadModel imageModel)
         {
-
+            string image = imageModel.Image.Substring(imageModel.Image.IndexOf(',')+1); // removes the intital headers that defines the image 64
+            Console.WriteLine(image);
             //convert to blob
-            Console.WriteLine(blobString.GetType());
-            byte[] blob = Convert.FromBase64String(blobString);
+            var imageDataByteArray = Convert.FromBase64String(image);
             //set up array of ingredients to be recieved
 
             JObject ingredients = new JObject();//delete contents when ready
-            ingredients.Add("Eggs", "0.893");
+            ingredients.Add("ingredient", "Eggs");
 
             //send to AI
             //creates the images file as jpg
-            System.IO.File.WriteAllBytes("Models\\pic.jpg", blob);
+            System.IO.File.WriteAllBytes("Models\\pic.jpg", imageDataByteArray);
             Process runPythonScrypt = new Process
             {
                 StartInfo = new ProcessStartInfo("python.exe", "Models\\TestPythonScrypt.py Models\\pic.jpg")
@@ -50,7 +52,7 @@ namespace ReciPeep.Controllers
                 Console.WriteLine("Message :{0} ", e.Message);
             }
 
-            
+
             return Ok(ingredients.ToString());
         }
     }
