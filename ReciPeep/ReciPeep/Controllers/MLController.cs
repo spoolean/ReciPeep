@@ -29,7 +29,7 @@ namespace ReciPeep.Controllers
             //send to AI
             Process runPythonScrypt = new Process
             {
-                StartInfo = new ProcessStartInfo("python.exe", $"Models\\TestPythonScrypt.py Models\\{imageModel.FileName}")
+                StartInfo = new ProcessStartInfo("python.exe", $"Models\\predictionscript.py Models\\{imageModel.FileName}")
                 {
                     RedirectStandardOutput = true
                 }
